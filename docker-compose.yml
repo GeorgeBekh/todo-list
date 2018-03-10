@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: ./build/prod/phalcon/Dockerfile
     volumes:
-      - $PWD:/var/www
+      - $PWD/src:/var/www
     networks:
       default:
         aliases:
