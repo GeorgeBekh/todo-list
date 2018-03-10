@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  phalcon:
+    build:
+      context: .
+      dockerfile: ./build/prod/phalcon/Dockerfile
+    volumes:
+      - $PWD:/var/www
+    networks:
+      default:
+        aliases:
+          - backend
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./build/prod/nginx/Dockerfile
+    volumes:
+      - $PWD/frontend/public:/var/www
+    networks:
+      - default
+    
