@@ -35,7 +35,7 @@ class Registration extends Component {
     
     handleFormSubmit (e) {
         console.log(this.state);
-        axios.post(`/api/register`, {
+        axios.post(`/api/registration`, {
             login: this.state.login,
             password: this.state.password
         })
@@ -50,7 +50,7 @@ class Registration extends Component {
         const passwordConfirmation = this.state.passwordConfirmation;
         
         let message = '';
-        let isValid = !this.passwordsMatch();
+        let isNotValid = !this.passwordsMatch();
         
         if (!this.passwordsMatch()) {
             message = 'Passwords don\'t match';
@@ -72,7 +72,7 @@ class Registration extends Component {
                    onChange={this.handlePasswordConfirmationChange} 
                    type="password"
                    placeholder="Confirm password"/>
-            <input onClick={this.handleFormSubmit} disabled={isValid} value="Register" type="submit"/>
+            <input onClick={this.handleFormSubmit} disabled={isNotValid} value="Register" type="submit"/>
           </div>
         );
     }

@@ -1,11 +1,13 @@
 <?php
 
+use Phalcon\Http\Response;
+
 class IndexController extends ControllerBase
 {
 
     public function notFoundAction()
     {
-        echo "404";
+        return new Response(json_encode('404'), 404);
     }
 
 }
