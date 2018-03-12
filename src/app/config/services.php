@@ -68,8 +68,7 @@ $di->setShared('db', function () {
         'host'     => $config->database->host,
         'username' => $config->database->username,
         'password' => $config->database->password,
-        'dbname'   => $config->database->dbname,
-        'charset'  => $config->database->charset
+        'dbname'   => $config->database->dbname
     ];
 
     if ($config->database->adapter == 'Postgresql') {

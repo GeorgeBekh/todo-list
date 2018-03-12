@@ -13,7 +13,6 @@ return new \Phalcon\Config([
         'username'    => 'postgres',
         'password'    => 'password',
         'dbname'      => 'app',
-        'charset'     => 'utf8',
     ],
     'application' => [
         'appDir'         => APP_PATH . '/',
