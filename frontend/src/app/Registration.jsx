@@ -7,9 +7,7 @@ class Registration extends Component {
     constructor (props) {
         super(props);
         
-        this.handleLoginChange = this.handleLoginChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handlePasswordConfirmationChange = this.handlePasswordConfirmationChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         
         this.state = {
@@ -20,23 +18,24 @@ class Registration extends Component {
         };
     }
 
-    handleLoginChange (e) {
-        this.setState({login: e.target.value});
+    handleChange (e) {
+        let newState = {};
+        newState[e.target.name] = e.target.value;
+        this.setState(newState);
     }
-    
-    handlePasswordChange (e) {
-        this.setState({password: e.target.value});
-    }
-    
-    handlePasswordConfirmationChange (e) {
-        this.setState({passwordConfirmation: e.target.value});
-    }
-    
-    passwordsMatch () {
-        return this.state.password === this.state.passwordConfirmation;
+
+
+    isValid () {
+        let fieldsNotEmpty = this.state.login && this.state.password && this.state.passwordConfirmation;
+        let passwordsMatch = this.state.password === this.state.passwordConfirmation;
+        let emailValid = (/^.+@.+/).test(this.state.login);
+        
+        return passwordsMatch && emailValid && fieldsNotEmpty;
     }
     
     handleFormSubmit (e) {
+        e.preventDefault();
+        
         axios.post(`/api/registration`, {
             login: this.state.login,
             password: this.state.password
@@ -52,32 +51,26 @@ class Registration extends Component {
         const passwordConfirmation = this.state.passwordConfirmation;
         const redirect = this.state.successful ? <Redirect push to='/login'/> : '';
         
-        let message = '';
-        let isNotValid = !this.passwordsMatch();
-        
-        if (!this.passwordsMatch()) { //TODO: check on state change, set message to state
-            message = 'Passwords don\'t match';
-        }
-        
         return (
           <div>
             <h2>Register</h2>
-            <form autoComplete="on">
-                <p>{message}</p>
+            <form autoComplete="on" onSubmit={this.handleFormSubmit}>
                 <input value={login} 
-                       onChange={this.handleLoginChange} 
+                       onChange={this.handleChange} 
                        type="email"
-                       name="email"
+                       name="login"
                        placeholder="Email"/>
                 <input value={password} 
-                       onChange={this.handlePasswordChange} 
+                       onChange={this.handleChange} 
                        type="password"
+                       name="password"
                        placeholder="Password"/>
                 <input value={passwordConfirmation} 
-                       onChange={this.handlePasswordConfirmationChange} 
+                       onChange={this.handleChange} 
                        type="password"
+                       name="passwordConfirmation"
                        placeholder="Confirm password"/>
-                <button onClick={this.handleFormSubmit} disabled={isNotValid} type="button">Regsiter</button>
+                <input disabled={!this.isValid()} value="Regsiter" type="submit"/>
             </form>
             {redirect}
           </div>

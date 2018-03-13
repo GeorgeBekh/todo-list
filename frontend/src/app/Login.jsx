@@ -8,26 +8,32 @@ class Login extends Component {
     constructor (props) {
         super(props);
         
-        this.handleLoginChange = this.handleLoginChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         
         this.state = {
             login: '',
             password: '',
+            valid: false,
             successful: undefined
         };
     }
 
-    handleLoginChange (e) {
-        this.setState({login: e.target.value});
+    handleChange (e) {
+        let newState = {};
+        newState[e.target.name] = e.target.value;
+        this.setState(newState);
     }
     
-    handlePasswordChange (e) {
-        this.setState({password: e.target.value});
+     isValid () {
+        let fieldsNotEmpty = this.state.login && this.state.password;
+        
+        return fieldsNotEmpty;
     }
     
     handleFormSubmit (e) {
+        e.preventDefault();
+        
         axios.post(`/api/login`, {
             login: this.state.login,
             password: this.state.password
@@ -47,24 +53,25 @@ class Login extends Component {
     render() {
         const login = this.state.login;
         const password = this.state.password;
-        const redirect = this.state.successful ? <Redirect push to='/login'/> : '';
+        const redirect = this.state.successful ? <Redirect push to='/'/> : '';
 
         return (
           <div>
             <h2>Login</h2>
-            <form autoComplete="on">
+            <form autoComplete="on" onSubmit={this.handleFormSubmit}>
                 <input value={login} 
-                       onChange={this.handleLoginChange} 
+                       onChange={this.handleChange} 
                        type="email"
-                       name="email"
+                       name="login"
                        placeholder="Email" />
                 <input value={password} 
-                       onChange={this.handlePasswordChange} 
+                       onChange={this.handleChange} 
                        type="password"
-                       name="password" />
-                <button onClick={this.handleFormSubmit} type="button">Login</button>
+                       name="password" 
+                       placeholder="Password" />
+                <input disabled={!this.isValid()} value="Login" type="submit"/>
             </form>
-           
+            {redirect}
           </div>
         );
     }
