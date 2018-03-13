@@ -1,2 +1,4 @@
 /.phalcon/
+!/.phalcon/.gitkeep
 /cache/
+!/cache/.gitkeep
