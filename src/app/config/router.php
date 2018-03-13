@@ -19,6 +19,14 @@ $router->add(
     ]
 );
 
+$router->add(
+    $baseUrl . 'login', 
+    [
+       'controller' => 'api', 
+       'action' => 'login', 
+    ]
+);
+
 $router->notFound(
     [
         'controller' => 'index',

@@ -29,21 +29,12 @@ class UsersMigration_100 extends Migration
                         ]
                     ),
                     new Column(
-                        'login',
-                        [
-                            'type' => Column::TYPE_VARCHAR,
-                            'notNull' => true,
-                            'size' => 50,
-                            'after' => 'id'
-                        ]
-                    ),
-                    new Column(
                         'password',
                         [
                             'type' => Column::TYPE_VARCHAR,
                             'notNull' => true,
-                            'size' => 50,
-                            'after' => 'login'
+                            'size' => 100,
+                            'after' => 'id'
                         ]
                     ),
                     new Column(
@@ -54,11 +45,20 @@ class UsersMigration_100 extends Migration
                             'size' => 8,
                             'after' => 'password'
                         ]
+                    ),
+                    new Column(
+                        'login',
+                        [
+                            'type' => Column::TYPE_VARCHAR,
+                            'notNull' => true,
+                            'size' => 50,
+                            'after' => 'salt'
+                        ]
                     )
                 ],
                 'indexes' => [
                     new Index('firstkey', ['id'], null),
-                    new Index('users_login_key', ['login'], null)
+                    new Index('users_login_key', ['login'], 'UNIQUE')
                 ],
             ]
         );
@@ -71,7 +71,6 @@ class UsersMigration_100 extends Migration
      */
     public function up()
     {
-
     }
 
     /**

@@ -56,4 +56,5 @@ try {
 } catch (\Exception $e) {
     echo $e->getMessage() . '<br>';
     echo '<pre>' . $e->getTraceAsString() . '</pre>';
+    http_response_code(500);
 }
