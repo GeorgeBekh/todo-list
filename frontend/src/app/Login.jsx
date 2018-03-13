@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { Redirect } from 'react-router-dom'
+import axios from 'axios';
+import store from 'store2';
  
 class Login extends Component {
 
@@ -11,7 +14,8 @@ class Login extends Component {
         
         this.state = {
             login: '',
-            password: ''
+            password: '',
+            successful: undefined
         };
     }
 
@@ -24,23 +28,43 @@ class Login extends Component {
     }
     
     handleFormSubmit (e) {
-        console.log(this.state);
+        axios.post(`/api/login`, {
+            login: this.state.login,
+            password: this.state.password
+        })
+        .then(response => {
+            let successful = response.status === 200;
+            this.setState({successful: successful});
+            
+            if (!successful) {
+                return;
+            }
+
+            store.session('user', response.data);
+        });
     }
 
     render() {
         const login = this.state.login;
         const password = this.state.password;
+        const redirect = this.state.successful ? <Redirect push to='/login'/> : '';
+
         return (
           <div>
             <h2>Login</h2>
-            <input value={login} 
-                   onChange={this.handleLoginChange} 
-                   type="text" 
-                   placeholder="email"/>
-            <input value={password} 
-                   onChange={this.handlePasswordChange} 
-                   type="password"/>
-            <input onClick={this.handleFormSubmit} value="Login" type="submit"/>
+            <form autoComplete="on">
+                <input value={login} 
+                       onChange={this.handleLoginChange} 
+                       type="email"
+                       name="email"
+                       placeholder="Email" />
+                <input value={password} 
+                       onChange={this.handlePasswordChange} 
+                       type="password"
+                       name="password" />
+                <button onClick={this.handleFormSubmit} type="button">Login</button>
+            </form>
+           
           </div>
         );
     }

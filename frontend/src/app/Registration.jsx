@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { Redirect } from 'react-router-dom'
 import axios from 'axios';
  
 class Registration extends Component {
+
     constructor (props) {
         super(props);
         
@@ -13,7 +15,8 @@ class Registration extends Component {
         this.state = {
             login: '',
             password: '',
-            passwordConfirmation: ''
+            passwordConfirmation: '',
+            successful: undefined
         };
     }
 
@@ -34,13 +37,12 @@ class Registration extends Component {
     }
     
     handleFormSubmit (e) {
-        console.log(this.state);
         axios.post(`/api/registration`, {
             login: this.state.login,
             password: this.state.password
         })
         .then(response => {
-            console.log(response);
+           this.setState({successful: response.status === 200});
         });
     }
 
@@ -48,31 +50,36 @@ class Registration extends Component {
         const login = this.state.login;
         const password = this.state.password;
         const passwordConfirmation = this.state.passwordConfirmation;
+        const redirect = this.state.successful ? <Redirect push to='/login'/> : '';
         
         let message = '';
         let isNotValid = !this.passwordsMatch();
         
-        if (!this.passwordsMatch()) {
+        if (!this.passwordsMatch()) { //TODO: check on state change, set message to state
             message = 'Passwords don\'t match';
         }
         
         return (
           <div>
             <h2>Register</h2>
-            <p>{message}</p>
-            <input value={login} 
-                   onChange={this.handleLoginChange} 
-                   type="text" 
-                   placeholder="Email"/>
-            <input value={password} 
-                   onChange={this.handlePasswordChange} 
-                   type="password"
-                   placeholder="Password"/>
-            <input value={passwordConfirmation} 
-                   onChange={this.handlePasswordConfirmationChange} 
-                   type="password"
-                   placeholder="Confirm password"/>
-            <input onClick={this.handleFormSubmit} disabled={isNotValid} value="Register" type="submit"/>
+            <form autoComplete="on">
+                <p>{message}</p>
+                <input value={login} 
+                       onChange={this.handleLoginChange} 
+                       type="email"
+                       name="email"
+                       placeholder="Email"/>
+                <input value={password} 
+                       onChange={this.handlePasswordChange} 
+                       type="password"
+                       placeholder="Password"/>
+                <input value={passwordConfirmation} 
+                       onChange={this.handlePasswordConfirmationChange} 
+                       type="password"
+                       placeholder="Confirm password"/>
+                <button onClick={this.handleFormSubmit} disabled={isNotValid} type="button">Regsiter</button>
+            </form>
+            {redirect}
           </div>
         );
     }
