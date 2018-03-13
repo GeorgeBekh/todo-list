@@ -51,21 +51,17 @@ class Login extends Component {
     }
 
     render() {
-        const login = this.state.login;
-        const password = this.state.password;
         const redirect = this.state.successful ? <Redirect push to='/'/> : '';
 
         return (
           <div>
             <h2>Login</h2>
             <form autoComplete="on" onSubmit={this.handleFormSubmit}>
-                <input value={login} 
-                       onChange={this.handleChange} 
+                <input onChange={this.handleChange} 
                        type="email"
                        name="login"
                        placeholder="Email" />
-                <input value={password} 
-                       onChange={this.handleChange} 
+                <input onChange={this.handleChange} 
                        type="password"
                        name="password" 
                        placeholder="Password" />

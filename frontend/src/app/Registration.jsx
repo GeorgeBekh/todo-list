@@ -46,27 +46,21 @@ class Registration extends Component {
     }
 
     render() {
-        const login = this.state.login;
-        const password = this.state.password;
-        const passwordConfirmation = this.state.passwordConfirmation;
         const redirect = this.state.successful ? <Redirect push to='/login'/> : '';
         
         return (
           <div>
             <h2>Register</h2>
             <form autoComplete="on" onSubmit={this.handleFormSubmit}>
-                <input value={login} 
-                       onChange={this.handleChange} 
+                <input onChange={this.handleChange} 
                        type="email"
                        name="login"
                        placeholder="Email"/>
-                <input value={password} 
-                       onChange={this.handleChange} 
+                <input onChange={this.handleChange} 
                        type="password"
                        name="password"
                        placeholder="Password"/>
-                <input value={passwordConfirmation} 
-                       onChange={this.handleChange} 
+                <input onChange={this.handleChange} 
                        type="password"
                        name="passwordConfirmation"
                        placeholder="Confirm password"/>
