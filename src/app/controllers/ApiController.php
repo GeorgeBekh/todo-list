@@ -81,6 +81,6 @@ class ApiController extends Controller
     }
     
     private function validateEmail($email) {
-        return (bool) strpos($email, '@');
+        return (bool) preg_match('/^.+@.+/', $email);
     }
 }
