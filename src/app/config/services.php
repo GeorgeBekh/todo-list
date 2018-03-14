@@ -1,12 +1,14 @@
 <?php
 
+use Phalcon\Events\Manager;
+use Phalcon\Flash\Direct as Flash;
+use Phalcon\Mvc\Dispatcher;
+use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
+use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
-use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
-use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
-use Phalcon\Flash\Direct as Flash;
 
 /**
  * Shared configuration service
@@ -109,3 +111,38 @@ $di->setShared('session', function () {
 
     return $session;
 });
+
+$di->set(
+    "dispatcher",
+    function () {
+        // Create an events manager
+        $eventsManager = new Manager();
+
+        // Listen for events produced in the dispatcher using the Security plugin
+        $eventsManager->attach(
+            "dispatch:beforeExecuteRoute",
+            new Firewall()
+        );
+
+        $dispatcher = new Dispatcher();
+
+        // Assign the events manager to the dispatcher
+        $dispatcher->setEventsManager($eventsManager);
+
+        return $dispatcher;
+    }
+);
+
+$di->setShared(
+    "securityService",
+    function () {
+        return new SecurityService();
+    }
+);
+
+$di->setShared(
+    "userService",
+    function () {
+        return new UserService($this->get('db'));
+    }
+);

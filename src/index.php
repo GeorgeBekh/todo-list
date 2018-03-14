@@ -45,6 +45,11 @@ try {
      * Include Autoloader
      */
     include APP_PATH . '/config/loader.php';
+    
+    /**
+     * Include Composer Autoloader
+     */
+    include BASE_PATH . '/vendor/autoload.php';
 
     /**
      * Handle the request
@@ -53,7 +58,7 @@ try {
 
     echo str_replace(["\n","\r","\t"], '', $application->handle()->getContent());
 
-} catch (\Exception $e) {
+} catch (\Throwable $e) {
     echo $e->getMessage() . '<br>';
     echo '<pre>' . $e->getTraceAsString() . '</pre>';
     http_response_code(500);

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router-dom'
 import axios from 'axios';
-import store from 'store2';
+import User from '../Models/User.js';
  
 class Login extends Component {
 
@@ -14,7 +14,6 @@ class Login extends Component {
         this.state = {
             login: '',
             password: '',
-            valid: false,
             successful: undefined
         };
     }
@@ -34,20 +33,14 @@ class Login extends Component {
     handleFormSubmit (e) {
         e.preventDefault();
         
-        axios.post(`/api/login`, {
-            login: this.state.login,
-            password: this.state.password
-        })
-        .then(response => {
-            let successful = response.status === 200;
-            this.setState({successful: successful});
-            
-            if (!successful) {
-                return;
-            }
-
-            store.session('user', response.data);
-        });
+        let onSuccess = () => {
+            this.setState({successful: true});
+        };
+        let onFailure = () => {
+            this.setState({successful: false});
+        };
+        
+        User.authenticate(this.state.login, this.state.password, onSuccess, onFailure);
     }
 
     render() {

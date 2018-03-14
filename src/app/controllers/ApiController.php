@@ -1,7 +1,7 @@
 <?php
 
+use Phalcon\Http\Response;
 use Phalcon\Mvc\Controller;
-use Phalcon\Db\Adapter\Pdo\Postgresql;
 
 class ApiController extends Controller
 {
@@ -9,61 +9,55 @@ class ApiController extends Controller
         $request = $this->request->getJsonRawBody(true);
         
         if (!$this->registrationRequestIsValid($request)) {
-            return new Phalcon\Http\Response('', 400);
+            return new Response('', 400);
         }
 
         $salt = base64_encode(random_bytes(6));
          
         $hashedPassword = password_hash($request['password'] . $salt, PASSWORD_BCRYPT);
 
-        /* @var $db Phalcon\Db\Adapter\Pdo\Postgresql */
-        $db = $this->di->get('db');
-        $db->insert(
-            'users',
-            [$request['login'], $hashedPassword, $salt],
-            ['login', 'password', 'salt']
-        );
+        /* @var $userService UserService */
+        $userService = $this->di->get('userService');
+        $userService->addUser(new User($request['login'], $hashedPassword, $salt));
         
-        return new Phalcon\Http\Response('', 200);
+        return new Response('', 200);
     }
     
     public function loginAction() {
         $request = $this->request->getJsonRawBody(true);
         
         if (!$this->loginRequestIsValid($request)) {
-            return new Phalcon\Http\Response('', 400);
+            return new Response('', 400);
         }
         
-        /* @var $db Phalcon\Db\Adapter\Pdo\Postgresql */
-        $db = $this->di->get('db');
-        $user = $db->fetchOne(
-            'SELECT * FROM users WHERE login = :login',
-            Phalcon\Db::FETCH_ASSOC,
-            ['login' => $request['login']]
-        );
+        /* @var $userService UserService */
+        $userService = $this->di->get('userService');
+        $user = $userService->findOneByLogin($request['login']);
         
         if (empty($user)) {
-            return new Phalcon\Http\Response('', 400); 
+            return new Response('', 400); 
         }
         
         $passwordValid = password_verify(
-            $request['password'] . $user['salt'],
-            $user['password']
+            $request['password'] . $user->getSalt(),
+            $user->getHashedPassword()
         );
         
         if (!$passwordValid) {
-            return new Phalcon\Http\Response('', 400); 
+            return new Response('', 400); 
         }
+
+        $token = $this->di->get('securityService')->generateToken($user->getLogin());
         
-        $this->session->start();
-        $this->session->set('user', ['id' => $user['id']]);
-        
-        $userView = [
-            'id' => $user['id'],
-            'login' => $user['login']
+        $response = [
+            'user' => [
+                'id' => $user->getId(),
+                'login' => $user->getLogin(),
+            ],
+            'token' => $token,
         ];
         
-        return new Phalcon\Http\Response(json_encode($userView), 200); 
+        return new Response(json_encode($response), 200); 
     }
     
     private function registrationRequestIsValid($request) {

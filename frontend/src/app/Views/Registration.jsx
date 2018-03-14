@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router-dom'
 import axios from 'axios';
+import User from '../Models/User.js';
  
 class Registration extends Component {
 
@@ -24,7 +25,6 @@ class Registration extends Component {
         this.setState(newState);
     }
 
-
     isValid () {
         let fieldsNotEmpty = this.state.login && this.state.password && this.state.passwordConfirmation;
         let passwordsMatch = this.state.password === this.state.passwordConfirmation;
@@ -36,13 +36,14 @@ class Registration extends Component {
     handleFormSubmit (e) {
         e.preventDefault();
         
-        axios.post(`/api/registration`, {
-            login: this.state.login,
-            password: this.state.password
-        })
-        .then(response => {
-           this.setState({successful: response.status === 200});
-        });
+        let onSuccess = () => {
+            this.setState({successful: true});
+        };
+        let onFailure = () => {
+            this.setState({successful: false});
+        };
+        
+        User.register(this.state.login, this.state.password, onSuccess, onFailure);
     }
 
     render() {

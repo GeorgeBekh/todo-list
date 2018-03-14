@@ -1,4 +1,5 @@
 /.phalcon/
+/vendor/
 !/.phalcon/.gitkeep
 /cache/
 !/cache/.gitkeep

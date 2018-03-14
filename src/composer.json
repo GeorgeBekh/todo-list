@@ -1,0 +1,13 @@
+{
+    "name": "georgebekh/app",
+    "type": "project",
+    "require": {
+        "lcobucci/jwt": "^3.2"
+    },
+    "authors": [
+        {
+            "name": "GeorgeBekh",
+            "email": "georgebekh@mail.ru"
+        }
+    ]
+}

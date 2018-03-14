@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+
+docker run \
+    --rm \
+    -it \
+    -u "$(id -u):$(id -g)" \
+    --env SSH_AUTH_SOCK=/tmp/agent.sock \
+    -v /etc/passwd:/etc/passwd:ro \
+    -v /etc/group:/etc/group:ro \
+    -v "$SSH_AUTH_SOCK":/tmp/agent.sock \
+    -v "$HOME":"$HOME" \
+    -v "$(pwd)":/app \
+    -w /app \
+    composer "$@"
