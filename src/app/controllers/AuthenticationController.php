@@ -3,7 +3,7 @@
 use Phalcon\Http\Response;
 use Phalcon\Mvc\Controller;
 
-class ApiController extends Controller
+class AuthenticationController extends Controller
 {
     public function registrationAction() {
         $request = $this->request->getJsonRawBody(true);

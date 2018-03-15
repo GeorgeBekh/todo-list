@@ -13,6 +13,11 @@ class SecurityService {
     const TOKEN_TTL = 14400; //4 hours
     
     private $login;
+    private $userService;
+    
+    public function __construct(UserService $userService) {
+        $this->userService = $userService;
+    }
 
     public function authenticate(string $token) : bool {
         $jwtToken = (new Parser())->parse((string) $token);
@@ -30,8 +35,12 @@ class SecurityService {
         return true;
     }
     
-    public function getCurrentUser() {
+    public function getCurrentUser() : ?User {
+        if (!$this->isAuthenticated()) {
+            return null;
+        }
         
+        return $this->userService->findOneByLogin($this->login);
     }
     
     public function generateToken(string $login) : string {

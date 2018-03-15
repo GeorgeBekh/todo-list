@@ -136,7 +136,7 @@ $di->set(
 $di->setShared(
     "securityService",
     function () {
-        return new SecurityService();
+        return new SecurityService($this->get('userService'));
     }
 );
 

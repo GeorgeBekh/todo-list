@@ -14,7 +14,7 @@ $baseUrl = '/api/';
 $router->add(
     $baseUrl . 'registration', 
     [
-       'controller' => 'api', 
+       'controller' => 'authentication', 
        'action' => 'registration', 
     ]
 );
@@ -22,8 +22,16 @@ $router->add(
 $router->add(
     $baseUrl . 'login', 
     [
-       'controller' => 'api', 
+       'controller' => 'authentication', 
        'action' => 'login', 
+    ]
+);
+
+$router->add(
+    $baseUrl . 'todo/', 
+    [
+       'controller' => 'todo', 
+       'action' => 'get', 
     ]
 );
 
