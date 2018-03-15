@@ -146,3 +146,10 @@ $di->setShared(
         return new UserService($this->get('db'));
     }
 );
+
+$di->setShared(
+    "todoService",
+    function () {
+        return new TodoService($this->get('db'));
+    }
+);

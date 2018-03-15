@@ -2,14 +2,13 @@
 
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Signer\Hmac\Sha512 as Sha5122;
-use Lcobucci\JWT\Signer\Rsa\Sha512;
+use Lcobucci\JWT\Signer\Hmac\Sha512;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
 
 class SecurityService {
     
-    const SECRET = 'someSecret';
+    const SECRET = 'someSecret'; //TODO: get from env
     const TOKEN_TTL = 14400; //4 hours
     
     private $login;
@@ -25,7 +24,7 @@ class SecurityService {
         if (!$this->tokenIsValid($jwtToken)) {
             return false;
         }
-        
+
         if (!($login = $jwtToken->getClaim('login'))) {
             return false;
         }
@@ -44,7 +43,7 @@ class SecurityService {
     }
     
     public function generateToken(string $login) : string {
-        $signer = new Sha5122();
+        $signer = new Sha512();
 
         $token = (new Builder())->setIssuedAt(time())
             ->setExpiration(time() + self::TOKEN_TTL)
@@ -60,8 +59,7 @@ class SecurityService {
     }
     
     private function tokenIsValid(Token $token) {
-        $data = new ValidationData();
-        $data->setCurrentTime(time());
+        $data = new ValidationData(time());
 
         return $token->validate($data) && $token->verify(new Sha512(), self::SECRET);
     }

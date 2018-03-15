@@ -27,8 +27,8 @@ class UserService {
         return new User($user['login'], $user['password'], $user['salt'], $user['id']);
     }
     
-    public function addUser(User $user) {
-        $this->database->insert(
+    public function addUser(User $user) : bool {
+        return $this->database->insert(
             self::TABLE_NAME,
             [$user->getLogin(), $user->getHashedPassword(), $user->getSalt()],
             ['login', 'password', 'salt']

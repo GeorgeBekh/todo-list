@@ -31,7 +31,15 @@ $router->add(
     $baseUrl . 'todo/', 
     [
        'controller' => 'todo', 
-       'action' => 'get', 
+       'action' => 'getAll', 
+    ]
+);
+
+$router->add(
+    $baseUrl . 'todo/{id}/', 
+    [
+       'controller' => 'todo', 
+       'action' => 'item',
     ]
 );
 
