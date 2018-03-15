@@ -3,8 +3,14 @@ import { BrowserRouter, Route, Link, IndexRoute, NavLink, browserHistory } from 
 import TodoList from "./TodoList.jsx";
 import Login from "./Login.jsx";
 import Registration from "./Registration.jsx";
+import User from "./../Models/User.js";
  
 class Main extends Component {
+    
+    constructor (props) {
+        super(props);
+        this.user = new User();
+    }
 
     render() {
       return (
@@ -17,9 +23,9 @@ class Main extends Component {
                 <li><NavLink to="/registration">Registration</NavLink></li>
               </ul>
               <div className="content">
-                <Route exact path="/" component={TodoList}/>
-                <Route path="/login" component={Login}/>
-                <Route path="/registration" component={Registration}/>
+                <Route exact path="/" render={props => <TodoList user={this.user} />} />
+                <Route path="/login" render={props => <Login user={this.user} />}/>
+                <Route path="/registration" render={props => <Registration user={this.user} />}/>
               </div>
           </div>
         </BrowserRouter>

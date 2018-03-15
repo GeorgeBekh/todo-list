@@ -40,7 +40,7 @@ class Login extends Component {
             this.setState({successful: false});
         };
         
-        User.authenticate(this.state.login, this.state.password, onSuccess, onFailure);
+        this.props.user.authenticate(this.state.login, this.state.password, onSuccess, onFailure);
     }
 
     render() {

@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import TodoItem from "./TodoItem.jsx";
 import User from "../Models/User.js";
 import TodoListModel from "../Models/TodoListModel.js";
+import TodoListNetworkStorage from "../Models/TodoListNetworkStorage.js";
  
 class TodoList extends Component {
 
@@ -13,12 +14,20 @@ class TodoList extends Component {
         this.handleInput = this.handleInput.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
         this.handleCheckAll = this.handleCheckAll.bind(this);
-        this.forceUpdate = this.forceUpdate.bind(this);
-        
-        this.model = new TodoListModel([]);
-        this.model.subscribeOnChange(this.forceUpdate); //TODO: how to do it "The React Way"?
-        
+
+        this.model = new TodoListModel();
+        this.networkStorage = new TodoListNetworkStorage(this.props.user);
+
+        this.model.subscribe((() => this.forceUpdate()).bind(this)); //TODO: how to do it "The React Way"?
+        this.model.subscribe(this.networkStorage.onChangeCallback);
+
+        this.networkStorage.getItems((items => {
+            this.model.init(items);
+            this.setState({pending: false});
+        }).bind(this));
+
         this.state = {
+            pending: true,
             newTodo: '',
             filter: 'all'
         };
@@ -57,7 +66,7 @@ class TodoList extends Component {
     }
 
     render() {
-        let redirect = User.isAuthenticated() ? '' : <Redirect push to='/login'/> ;
+        let redirect = this.props.user.isAuthenticated() ? '' : <Redirect push to='/login'/> ;
         let list = [];
         let items = this.model.getItems(this.state.filter);
 
@@ -79,7 +88,8 @@ class TodoList extends Component {
                 <input type="text" 
                        value={this.state.newTodo}
                        onChange={this.handleInput}
-                       onKeyPress={this.handleKeyPress} />
+                       onKeyPress={this.handleKeyPress} 
+                       disabled={this.state.pending} />
             </div>
             {list}
             <div>

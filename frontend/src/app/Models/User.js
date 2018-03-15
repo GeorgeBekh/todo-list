@@ -2,7 +2,7 @@ import store from 'store2';
 import axios from 'axios';
 
 class User {
-    static register (login, password, onSuccess, onFailure) {
+    register (login, password, onSuccess, onFailure) {
         axios.post(`/api/registration`, {
             login: login,
             password: password
@@ -16,7 +16,7 @@ class User {
         });
     }
 
-    static authenticate (login, password, onSuccess, onFailure) {
+    authenticate (login, password, onSuccess, onFailure) {
         axios.post(`/api/login`, {
             login: login,
             password: password
@@ -36,24 +36,24 @@ class User {
         });
     };
 
-    static request (request, callback) {
+    request (request, callback) {
         request.headers = {'User-Authentication': store.session('token')};
         axios(request).then(callback);
     }
 
-    static getId () {
+    getId () {
         return store.session('user').id;
     };
 
-    static getLogin () {
+    getLogin () {
         return store.session('user').login;
     };
 
-    static isAuthenticated () {
+    isAuthenticated () {
         return Boolean(store.session('token'));
     };
 
-    static logout () {
+    logout () {
         return store.session.remove('user');
     };
 }

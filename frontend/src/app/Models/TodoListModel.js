@@ -1,21 +1,32 @@
 
 class TodoListModel {
+    
+    constructor () {
+        this.items = [];
+        this.onChangeCallbacks = [];
+    }
 
-    constructor (items) {
+    init (items) {
         this.items = items;
     }
-    
-    subscribeOnChange (callback) {
-        this.onChange = callback;
+
+    subscribe (callback) {
+        this.onChangeCallbacks.push(callback);
+    }
+
+    dispatch () {
+        this.onChangeCallbacks.map((callback => {
+            callback(this.items);
+        }).bind(this));
     }
     
     add (title) {
-        let id = Math.random().toString(16).substring(7);
+        let id = Math.random().toString(16).substring(7, 15);
         this.items.push({title: title, checked: false, id: id});
         
-        this.onChange();
+        this.dispatch();
     }
-    
+
     toggle (itemToToggle) {
         this.items = this.items.map (item => {
             if (item === itemToToggle) {
@@ -25,13 +36,13 @@ class TodoListModel {
             return item;
         });
         
-        this.onChange();
+        this.dispatch();
     }
     
     delete (itemToDelete) {
         this.items = this.items.filter(item => item !== itemToDelete);
         
-        this.onChange();
+        this.dispatch();
     }
     
     setAll (checked) {
@@ -41,7 +52,7 @@ class TodoListModel {
             return item;
         });
         
-        this.onChange();
+        this.dispatch();
     }
     
     allChecked () {

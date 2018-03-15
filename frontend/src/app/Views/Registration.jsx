@@ -43,7 +43,7 @@ class Registration extends Component {
             this.setState({successful: false});
         };
         
-        User.register(this.state.login, this.state.password, onSuccess, onFailure);
+        this.props.user.register(this.state.login, this.state.password, onSuccess, onFailure);
     }
 
     render() {
