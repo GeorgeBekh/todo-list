@@ -29,7 +29,7 @@ class TodoController extends Controller
     public function getAllAction() {
         $items = $this->todoService->findByUserId($this->user->getId());
         $result = [];
-        
+
         foreach ($items as $item) {
             $result[] = [
                 'id' => $item->getId(),
@@ -45,25 +45,39 @@ class TodoController extends Controller
         $id = $this->dispatcher->getParam('id');
         
         if ($this->request->isPost()) {
-            return $this->addItem($id);
+            return $this->addOrUpdateItem($id);
+        }
+        
+        if ($this->request->isDelete()) {
+            return $this->deleteItem($id);
         }
         
         return $this->getItem($id);
     }
     
-    private function addItem(string $id) {
+    private function addOrUpdateItem(int $id) {
         $request = $this->request->getJsonRawBody(true);
         
-        if (empty($request['title'])) {
+        if (empty($request['title']) || !isset($request['checked'])) {
             return new JsonResponse('', 400);
         }
         
-        $this->todoService->addOne(new TodoItem($id, $this->user->getId(), $request['title'], false));
+        $this->todoService->addOrUpdate(
+            new TodoItem($id, $this->user->getId(), $request['title'], $request['checked'])
+        );
         
-        return new JsonResponse('', 201);
+        return new JsonResponse();
+    }
+
+    private function deleteItem(int $id) {        
+        $result = $this->todoService->delete(
+            new TodoItem($id, $this->user->getId())
+        );
+        
+        return new JsonResponse();
     }
     
     private function getItem(string $id) {
-        return new JsonResponse('', 405);
+        return new JsonResponse('', 501);
     }
 }

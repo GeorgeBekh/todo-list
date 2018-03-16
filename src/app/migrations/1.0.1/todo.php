@@ -22,9 +22,8 @@ class TodoMigration_101 extends Migration
                     new Column(
                         'id',
                         [
-                            'type' => Column::TYPE_VARCHAR,
+                            'type' => Column::TYPE_INTEGER,
                             'notNull' => true,
-                            'size' => 10,
                             'first' => true
                         ]
                     ),

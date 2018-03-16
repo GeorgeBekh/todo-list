@@ -21,7 +21,7 @@ class TodoListModel {
     }
     
     add (title) {
-        let id = Math.random().toString(16).substring(7, 15);
+        let id = this.items.length === 0 ? 0 : this.items[this.items.length - 1].id + 1;
         this.items.push({title: title, checked: false, id: id});
         
         this.dispatch();

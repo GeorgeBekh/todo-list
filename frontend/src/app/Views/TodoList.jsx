@@ -97,21 +97,24 @@ class TodoList extends Component {
                     <input type="radio" 
                            name="filter" 
                            value="all" 
-                           onClick={this.handleFilterChange} />
+                           onChange={this.handleFilterChange} 
+                           checked={this.state.filter === 'all'} />
                     All
                 </label>
                 <label>
                     <input type="radio" 
                            name="filter"
                            value="unchecked"
-                           onClick={this.handleFilterChange} />
+                           onClick={this.handleFilterChange} 
+                           checked={this.state.filter === 'unchecked'} />
                     Active
                 </label>
                 <label>
                     <input type="radio" 
                            name="filter" 
                            value="checked"
-                           onClick={this.handleFilterChange} />
+                           onClick={this.handleFilterChange} 
+                           checked={this.state.filter === 'checked'} />
                     Completed
                 </label>
             </div>

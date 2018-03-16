@@ -36,10 +36,11 @@ $router->add(
 );
 
 $router->add(
-    $baseUrl . 'todo/{id}/', 
+    $baseUrl . 'todo/(\d+)/', 
     [
        'controller' => 'todo', 
        'action' => 'item',
+       'id' => 1
     ]
 );
 

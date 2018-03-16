@@ -8,7 +8,7 @@ class TodoItem {
     private $checked;
     
     public function __construct(
-        string $id,
+        int $id,
         int $userId,
         string $title = '',
         bool $checked = false
@@ -19,7 +19,7 @@ class TodoItem {
         $this->checked = $checked;
     }
     
-    public function getId() : string {
+    public function getId() : int {
         return $this->id;
     }
     

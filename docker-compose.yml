@@ -39,7 +39,7 @@ services:
         aliases:
           - database
     environment:
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: password #simple password since ports ain't open
       POSTGRES_DB: app
 
   nginx:
