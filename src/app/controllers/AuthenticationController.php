@@ -5,11 +5,13 @@ use Phalcon\Mvc\Controller;
 
 class AuthenticationController extends Controller
 {
+    private const ERR_CODE_WRONG_CREDENTIALS = 'wrongCredentials';
+    
     public function registrationAction() {
         $request = $this->request->getJsonRawBody(true);
         
         if (!$this->registrationRequestIsValid($request)) {
-            return new Response('', 400);
+            return new JsonResponse('', 400);
         }
 
         $salt = base64_encode(random_bytes(6));
@@ -18,16 +20,20 @@ class AuthenticationController extends Controller
 
         /* @var $userService UserService */
         $userService = $this->di->get('userService');
-        $userService->addUser(new User($request['login'], $hashedPassword, $salt));
+        try {
+            $userService->addUser(new User($request['login'], $hashedPassword, $salt));
+        } catch (\UserAlreadyExistsException $e) {
+            return new JsonResponse('userExists', 400);
+        }
         
-        return new Response('', 200);
+        return new JsonResponse('', 200);
     }
     
     public function loginAction() {
         $request = $this->request->getJsonRawBody(true);
         
         if (!$this->loginRequestIsValid($request)) {
-            return new Response('', 400);
+            return new JsonResponse(self::ERR_CODE_WRONG_CREDENTIALS, 400);
         }
         
         /* @var $userService UserService */
@@ -35,7 +41,7 @@ class AuthenticationController extends Controller
         $user = $userService->findOneByLogin($request['login']);
         
         if (empty($user)) {
-            return new Response('', 400); 
+            return new JsonResponse(self::ERR_CODE_WRONG_CREDENTIALS, 400); 
         }
         
         $passwordValid = password_verify(
@@ -44,20 +50,28 @@ class AuthenticationController extends Controller
         );
         
         if (!$passwordValid) {
-            return new Response('', 400); 
+            return new JsonResponse(self::ERR_CODE_WRONG_CREDENTIALS, 400); 
         }
 
         $token = $this->di->get('securityService')->generateToken($user->getLogin());
         
         $response = [
-            'user' => [
-                'id' => $user->getId(),
-                'login' => $user->getLogin(),
-            ],
             'token' => $token,
         ];
         
-        return new Response(json_encode($response), 200); 
+        return new JsonResponse($response, 200); 
+    }
+    
+    public function infoAction() {
+        $user = $this->di->get('securityService')->getCurrentUser();
+        if (!$user) {
+            return new JsonResponse('', 403);
+        }
+
+        return new JsonResponse([
+            'id' => $user->getId(),
+            'login' => $user->getLogin(),
+        ]);
     }
     
     private function registrationRequestIsValid($request) {

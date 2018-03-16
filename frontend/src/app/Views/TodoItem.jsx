@@ -6,7 +6,7 @@ class TodoItem extends Component {
         super(props);
     }
 
-    render() {
+    render () {
         const item = this.props.item;
         return (
           <div>

@@ -10,11 +10,26 @@ class TodoList extends Component {
     constructor (props) {
         super(props);
 
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.handleInput = this.handleInput.bind(this);
-        this.handleFilterChange = this.handleFilterChange.bind(this);
-        this.handleCheckAll = this.handleCheckAll.bind(this);
+        this.state = {
+            userAuthenticated: undefined,
+            newTodo: '',
+            filter: 'all',
+            pending: true
+        };
 
+        this.handleInput = this.handleInput.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleCheckAll = this.handleCheckAll.bind(this);
+        this.handleFilterChange = this.handleFilterChange.bind(this);
+
+        this.props.user.checkAuthentication(((isAuthenticated) => {
+            this.setState({userAuthenticated: isAuthenticated});
+        }).bind(this));
+
+        this._initializeList();
+    }
+    
+    _initializeList () {
         this.model = new TodoListModel();
         this.networkStorage = new TodoListNetworkStorage(this.props.user);
 
@@ -25,32 +40,10 @@ class TodoList extends Component {
             this.model.init(items);
             this.setState({pending: false});
         }).bind(this));
-
-        this.state = {
-            pending: true,
-            newTodo: '',
-            filter: 'all'
-        };
-    }
-
-    handleItemToggle (item) {
-        this.model.toggle(item);
-    }
-
-    handleItemDelete (item) {
-        this.model.delete(item);
     }
 
     handleInput (e) {
         this.setState({newTodo: e.target.value});
-    }
-
-    handleCheckAll (e) {
-        this.model.setAll(e.target.checked);
-    }
-    
-    handleFilterChange (e) {
-        this.setState({filter: e.target.value});
     }
 
     handleKeyPress (e) {
@@ -65,8 +58,24 @@ class TodoList extends Component {
         }
     }
 
-    render() {
-        let redirect = this.props.user.isAuthenticated() ? '' : <Redirect push to='/login'/> ;
+    handleCheckAll (e) {
+        this.model.setAll(e.target.checked);
+    }
+
+    handleFilterChange (e) {
+        this.setState({filter: e.target.value});
+    }
+
+    handleItemToggle (item) {
+        this.model.toggle(item);
+    }
+
+    handleItemDelete (item) {
+        this.model.delete(item);
+    }
+
+    render () {
+        let redirect = this.state.userAuthenticated === false ? <Redirect push to='/login'/> : '';
         let list = [];
         let items = this.model.getItems(this.state.filter);
 
@@ -89,7 +98,8 @@ class TodoList extends Component {
                        value={this.state.newTodo}
                        onChange={this.handleInput}
                        onKeyPress={this.handleKeyPress} 
-                       disabled={this.state.pending} />
+                       disabled={this.state.pending} 
+                       placeholder="Type and press Enter"/>
             </div>
             {list}
             <div>
@@ -123,5 +133,5 @@ class TodoList extends Component {
         );
     }
 }
- 
+
 export default TodoList;

@@ -28,6 +28,14 @@ $router->add(
 );
 
 $router->add(
+    $baseUrl . 'user', 
+    [
+       'controller' => 'authentication', 
+       'action' => 'info', 
+    ]
+);
+
+$router->add(
     $baseUrl . 'todo/', 
     [
        'controller' => 'todo', 

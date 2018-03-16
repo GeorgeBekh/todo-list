@@ -1,33 +1,27 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router-dom'
-import axios from 'axios';
 import User from '../Models/User.js';
  
 class Login extends Component {
 
     constructor (props) {
         super(props);
-        
-        this.handleChange = this.handleChange.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
-        
+
         this.state = {
             login: '',
             password: '',
-            successful: undefined
+            successful: undefined,
+            errorCode: ''
         };
+        
+        this.handleInput = this.handleInput.bind(this);
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
-    handleChange (e) {
+    handleInput (e) {
         let newState = {};
         newState[e.target.name] = e.target.value;
         this.setState(newState);
-    }
-    
-     isValid () {
-        let fieldsNotEmpty = this.state.login && this.state.password;
-        
-        return fieldsNotEmpty;
     }
     
     handleFormSubmit (e) {
@@ -36,25 +30,45 @@ class Login extends Component {
         let onSuccess = () => {
             this.setState({successful: true});
         };
-        let onFailure = () => {
-            this.setState({successful: false});
+        let onFailure = errorCode => {
+            this.setState({
+                successful: false,
+                errorCode: errorCode
+            });
         };
         
         this.props.user.authenticate(this.state.login, this.state.password, onSuccess, onFailure);
     }
 
-    render() {
+    isValid () {
+        let fieldsNotEmpty = this.state.login && this.state.password;
+        
+        return fieldsNotEmpty;
+    }
+
+    render () {
         const redirect = this.state.successful ? <Redirect push to='/'/> : '';
+        let message = '';
+        switch (this.state.errorCode) {
+            case 'wrongCredentials':
+                message = 'Wrong login or password';
+                break;
+            case '':
+                break;
+            default:
+                message = 'Unknown error';
+        }
 
         return (
           <div>
             <h2>Login</h2>
             <form autoComplete="on" onSubmit={this.handleFormSubmit}>
-                <input onChange={this.handleChange} 
+                <p>{message}</p>
+                <input onChange={this.handleInput} 
                        type="email"
                        name="login"
                        placeholder="Email" />
-                <input onChange={this.handleChange} 
+                <input onChange={this.handleInput} 
                        type="password"
                        name="password" 
                        placeholder="Password" />

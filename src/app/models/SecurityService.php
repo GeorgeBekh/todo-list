@@ -7,21 +7,25 @@ use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
 
 class SecurityService {
-    
+
     const TOKEN_TTL = 14400; //4 hours
-    
+
     private $login;
     private $userService;
     private $secret;
-    
+
     public function __construct($secret, UserService $userService) {
         $this->secret = $secret;
         $this->userService = $userService;
     }
 
     public function authenticate(string $token) : bool {
-        $jwtToken = (new Parser())->parse((string) $token);
-        
+        try {
+            $jwtToken = (new Parser())->parse((string) $token);
+        } catch (\Exception $e) {
+            return false;
+        }
+
         if (!$this->tokenIsValid($jwtToken)) {
             return false;
         }
@@ -29,12 +33,12 @@ class SecurityService {
         if (!($login = $jwtToken->getClaim('login'))) {
             return false;
         }
-        
+
         $this->login = $login;
-        
+
         return true;
     }
-    
+
     public function getCurrentUser() : ?User {
         if (!$this->isAuthenticated()) {
             return null;

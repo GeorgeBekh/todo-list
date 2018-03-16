@@ -1,26 +1,28 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Route, Link, IndexRoute, NavLink, browserHistory } from 'react-router-dom'
+import { BrowserRouter, Route, Link} from 'react-router-dom'
 import TodoList from "./TodoList.jsx";
 import Login from "./Login.jsx";
 import Registration from "./Registration.jsx";
 import User from "./../Models/User.js";
  
 class Main extends Component {
-    
+
     constructor (props) {
         super(props);
         this.user = new User();
     }
 
-    render() {
+    render () {
       return (
         <BrowserRouter>
           <div>
             <h1>Simple SPA</h1>
-              <ul className="header">
-                <li><NavLink to="/">Todo</NavLink></li>
-                <li><NavLink to="/login">Login</NavLink></li>
-                <li><NavLink to="/registration">Registration</NavLink></li>
+            <a href="https://github.com/GeorgeBekh/todo-list" target="_blank">Source code</a>
+            <h2>Routes</h2>
+              <ul>
+                <li><Link to="/">Todo</Link></li>
+                <li><Link to="/login">Login</Link></li>
+                <li><Link to="/registration">Registration</Link></li>
               </ul>
               <div className="content">
                 <Route exact path="/" render={props => <TodoList user={this.user} />} />
@@ -32,5 +34,5 @@ class Main extends Component {
       );
     }
 }
- 
+
 export default Main;

@@ -10,9 +10,9 @@ class User {
         .then(response => {
             if (response.status === 200) {
                 onSuccess();
-            } else {
-                onFailure();
             }
+        }).catch(error => {
+            onFailure(error.response.data);
         });
     }
 
@@ -22,23 +22,37 @@ class User {
             password: password
         })
         .then(response => {
-            if (response.status === 200) {
-                store.session('user', response.data.user);
-                store.session('token', response.data.token);
-
-                console.log("Authentication successful!");
-                console.log("User id: " + this.getId() + ", Auth token: " + store.session('token'));
-
-                onSuccess();
-            } else {
-                onFailure();
+            if (response.status !== 200) {
+                return;
             }
+            store.session('user', response.data.user);
+            store.session('token', response.data.token);
+
+            onSuccess();
+        }).catch(error => {
+            onFailure(error.response.data);
         });
     }
 
-    request (request, callback) {
+    checkAuthentication (callback) {
+        let token = store.session('token');
+        if (!token) {
+            callback(false);
+        }
+        
+        this.request({
+            method: 'get',
+            url: '/api/user'
+        }, response => {
+            callback(true);
+        }, error => {
+            callback(false);
+        });
+    }
+
+    request (request, callback, onError) {
         request.headers = {'User-Authentication': store.session('token')};
-        axios(request).then(callback);
+        axios(request).then(callback).catch(onError);
     }
 
     getId () {
@@ -47,10 +61,6 @@ class User {
 
     getLogin () {
         return store.session('user').login;
-    }
-
-    isAuthenticated () {
-        return Boolean(store.session('token'));
     }
 
     logout () {
