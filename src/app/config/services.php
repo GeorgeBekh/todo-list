@@ -115,18 +115,14 @@ $di->setShared('session', function () {
 $di->set(
     "dispatcher",
     function () {
-        // Create an events manager
         $eventsManager = new Manager();
 
-        // Listen for events produced in the dispatcher using the Security plugin
         $eventsManager->attach(
             "dispatch:beforeExecuteRoute",
-            new Firewall()
+            new Authenticator()
         );
 
         $dispatcher = new Dispatcher();
-
-        // Assign the events manager to the dispatcher
         $dispatcher->setEventsManager($eventsManager);
 
         return $dispatcher;
@@ -136,7 +132,10 @@ $di->set(
 $di->setShared(
     "securityService",
     function () {
-        return new SecurityService($this->get('userService'));
+        return new SecurityService(
+            $this->getConfig()->application->secret,
+            $this->get('userService')
+        );
     }
 );
 

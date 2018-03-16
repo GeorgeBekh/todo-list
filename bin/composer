@@ -3,7 +3,7 @@ set -e
 
 docker run \
     --rm \
-    -it \
+    -i \
     -u "$(id -u):$(id -g)" \
     --env SSH_AUTH_SOCK=/tmp/agent.sock \
     -v /etc/passwd:/etc/passwd:ro \

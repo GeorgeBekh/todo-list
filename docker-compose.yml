@@ -12,10 +12,13 @@ services:
       dockerfile: ./build/prod/phalcon/Dockerfile
     volumes:
       - $PWD/src:/var/www
+    restart: always
     networks:
       default:
         aliases:
           - backend
+    environment:
+      - APP_SECRET
 
   migrator: 
     depends_on:
@@ -34,6 +37,7 @@ services:
     image: postgres:10.3-alpine
     volumes:
       - db-data:/var/lib/postgresql/data
+    restart: always
     networks:
       default:
         aliases:
@@ -50,6 +54,9 @@ services:
       dockerfile: ./build/prod/nginx/Dockerfile
     volumes:
       - $PWD/frontend/public:/var/www
+    restart: always
     networks:
       - default
+    ports:
+      - ${APP_IP:-127.0.0.1}:80:80
     

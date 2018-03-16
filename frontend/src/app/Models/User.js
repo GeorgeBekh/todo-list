@@ -34,7 +34,7 @@ class User {
                 onFailure();
             }
         });
-    };
+    }
 
     request (request, callback) {
         request.headers = {'User-Authentication': store.session('token')};
@@ -43,19 +43,19 @@ class User {
 
     getId () {
         return store.session('user').id;
-    };
+    }
 
     getLogin () {
         return store.session('user').login;
-    };
+    }
 
     isAuthenticated () {
         return Boolean(store.session('token'));
-    };
+    }
 
     logout () {
         return store.session.remove('user');
-    };
+    }
 }
 
 export default User;

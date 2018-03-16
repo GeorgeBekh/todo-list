@@ -4,7 +4,7 @@ use Phalcon\Dispatcher;
 use Phalcon\Events\Event;
 use Phalcon\Http\Request;
 
-class Firewall {
+class Authenticator {
     
     public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher) {
         /* @var $request Request */

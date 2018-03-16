@@ -8,13 +8,14 @@ use Lcobucci\JWT\ValidationData;
 
 class SecurityService {
     
-    const SECRET = 'someSecret'; //TODO: get from env
     const TOKEN_TTL = 14400; //4 hours
     
     private $login;
     private $userService;
+    private $secret;
     
-    public function __construct(UserService $userService) {
+    public function __construct($secret, UserService $userService) {
+        $this->secret = $secret;
         $this->userService = $userService;
     }
 
@@ -48,7 +49,7 @@ class SecurityService {
         $token = (new Builder())->setIssuedAt(time())
             ->setExpiration(time() + self::TOKEN_TTL)
             ->set('login', $login)
-            ->sign($signer, self::SECRET)
+            ->sign($signer, $this->secret)
             ->getToken();
         
         return (string) $token;
@@ -61,6 +62,6 @@ class SecurityService {
     private function tokenIsValid(Token $token) {
         $data = new ValidationData(time());
 
-        return $token->validate($data) && $token->verify(new Sha512(), self::SECRET);
+        return $token->validate($data) && $token->verify(new Sha512(), $this->secret);
     }
 }
