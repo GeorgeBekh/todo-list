@@ -1,5 +1,7 @@
-#!/usr/bin/env bash
+#! /usr/bin/env bash
 set -e
+
+docker rm -f todo-list-node
 
 docker run \
     --rm \

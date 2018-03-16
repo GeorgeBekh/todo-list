@@ -1,4 +1,4 @@
-#! /bin/env bash
+#! /usr/bin/env bash
 
 COMPOSER_PARAM=""
 NODE_PARAM="dev"
@@ -10,7 +10,7 @@ if [[ $1 = "-p" ]]; then
 fi
 
 (cd src && ../bin/composer install $COMPOSER_PARAM) &
-(cd frontend && ../bin/node npm run $NODE_PARAM) &
+(cd frontend && ../bin/node sh -c "npm install && npm run $NODE_PARAM") &
 
 export APP_SECRET=${APP_SECRET:-$(head -c 50 /dev/urandom | base64)}
 
