@@ -1,3 +1,5 @@
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+
 var webpack = require('webpack');
 var path = require('path');
 
@@ -16,6 +18,19 @@ var config = {
         test: /\.jsx?/,
         include: APP_DIR,
         use: 'babel-loader'
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[path][name]__[local]--[hash:base64:5]'
+            }
+          },
+          'to-string-loader'
+        ]
       }
     ]
   }

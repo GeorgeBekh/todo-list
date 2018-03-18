@@ -38,6 +38,7 @@ class User {
         let token = store.session('token');
         if (!token) {
             callback(false);
+            return;
         }
         
         this.request({

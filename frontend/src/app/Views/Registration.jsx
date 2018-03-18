@@ -32,7 +32,6 @@ class Registration extends Component {
             this.setState({successful: true});
         };
         let onFailure = errorCode => {
-            console.log(errorCode);
             this.setState({
                 successful: false,
                 errorCode: errorCode

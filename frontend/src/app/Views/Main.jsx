@@ -4,7 +4,8 @@ import TodoList from "./TodoList.jsx";
 import Login from "./Login.jsx";
 import Registration from "./Registration.jsx";
 import User from "./../Models/User.js";
- 
+import styles from "./../styles/main.css";
+console.log(styles);
 class Main extends Component {
 
     constructor (props) {
@@ -16,7 +17,7 @@ class Main extends Component {
       return (
         <BrowserRouter>
           <div>
-            <h1>Simple SPA</h1>
+            <h1 className={styles.locals.header}>Simple SPA</h1>
             <a href="https://github.com/GeorgeBekh/todo-list" target="_blank">Source code</a>
             <h2>Routes</h2>
               <ul>

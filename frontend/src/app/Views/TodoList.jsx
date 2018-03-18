@@ -21,7 +21,9 @@ class TodoList extends Component {
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleCheckAll = this.handleCheckAll.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
+    }
 
+    componentWillMount () {
         this.props.user.checkAuthentication(((isAuthenticated) => {
             this.setState({userAuthenticated: isAuthenticated});
         }).bind(this));
