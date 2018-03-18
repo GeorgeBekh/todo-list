@@ -39,10 +39,11 @@ class Main extends Component {
                     <a className={[styles.headerItem, styles.sourceCode].join(" ")} 
                        href="https://github.com/GeorgeBekh/todo-list" 
                        target="_blank">
+                       <img className={styles.icon} src='/img/github-icon.png'/>
                         Source code
                     </a>
                 </div>
-                <div className="content">
+                <div className={styles.content}>
                   <Route exact path="/" render={props => <TodoList user={this.user} />} />
                   <Route path="/login" render={props => <Login user={this.user} />}/>
                   <Route path="/registration" render={props => <Registration user={this.user} />}/>

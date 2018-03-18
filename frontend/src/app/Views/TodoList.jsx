@@ -4,6 +4,9 @@ import TodoItem from "./TodoItem.jsx";
 import User from "../Models/User.js";
 import TodoListModel from "../Models/TodoListModel.js";
 import TodoListNetworkStorage from "../Models/TodoListNetworkStorage.js";
+import css from "./../styles/to-do-list.css";
+
+const styles = css.locals;
  
 class TodoList extends Component {
 
@@ -95,8 +98,12 @@ class TodoList extends Component {
           <div>
             <h2>TODO-List</h2>
             <div>
-                <input type="checkbox" checked={this.model.allChecked()} onChange={this.handleCheckAll} />
-                <input type="text" 
+                <input className={styles.checkbox}
+                       type="checkbox"
+                       checked={this.model.allChecked()}
+                       onChange={this.handleCheckAll} />
+                <input className={styles.input}
+                       type="text" 
                        value={this.state.newTodo}
                        onChange={this.handleInput}
                        onKeyPress={this.handleKeyPress} 
@@ -106,15 +113,17 @@ class TodoList extends Component {
             {list}
             <div>
                 <label>
-                    <input type="radio" 
+                    <input className={styles.radio}
+                           type="radio" 
                            name="filter" 
                            value="all" 
-                           onChange={this.handleFilterChange} 
+                           onChange={this.handleFilterChange}
                            checked={this.state.filter === 'all'} />
                     All
                 </label>
                 <label>
-                    <input type="radio" 
+                    <input className={styles.radio}
+                           type="radio" 
                            name="filter"
                            value="unchecked"
                            onClick={this.handleFilterChange} 
@@ -122,7 +131,8 @@ class TodoList extends Component {
                     Active
                 </label>
                 <label>
-                    <input type="radio" 
+                    <input className={styles.radio}
+                           type="radio" 
                            name="filter" 
                            value="checked"
                            onClick={this.handleFilterChange} 

@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router-dom'
 import User from '../Models/User.js';
- 
+import css from "./../styles/forms.css";
+
+const forms = css.locals;
+
 class Login extends Component {
 
     constructor (props) {
@@ -48,31 +51,38 @@ class Login extends Component {
 
     render () {
         const redirect = this.state.successful ? <Redirect push to='/'/> : '';
-        let message = '';
+        let error = '';
         switch (this.state.errorCode) {
             case 'wrongCredentials':
-                message = 'Wrong login or password';
+                error = 'Wrong login or password';
                 break;
             case '':
                 break;
             default:
-                message = 'Unknown error';
+                error = 'Unknown error';
         }
+        
+        let message = error ? <div className={[forms.error, forms.element].join(" ")}>{error}</div> : '';
 
         return (
           <div>
-            <h2>Login</h2>
             <form autoComplete="on" onSubmit={this.handleFormSubmit}>
-                <p>{message}</p>
-                <input onChange={this.handleInput} 
+                <h2>Login</h2>
+                {message}
+                <input className={forms.element}
+                       onChange={this.handleInput} 
                        type="email"
                        name="login"
                        placeholder="Email" />
-                <input onChange={this.handleInput} 
+                <input className={forms.element}
+                       onChange={this.handleInput} 
                        type="password"
                        name="password" 
                        placeholder="Password" />
-                <input disabled={!this.isValid()} value="Login" type="submit"/>
+                <input className={[forms.element, forms.submit].join(' ')}
+                       disabled={!this.isValid()}
+                       value="Login"
+                       type="submit"/>
             </form>
             {redirect}
           </div>
