@@ -1,4 +1,28 @@
 .header {
-    color: red;
-    display: none;
+    position: fixed;
+    display: flex;
+    width: 100%;
+    top: 0;
+    height: 50px;
+    background: #efefef;
+    border-bottom: solid 1px #b6b6b6;
+    box-shadow: 0 2px 8px #b6b6b6;
 }
+
+.headerItem {
+    box-sizing: border-box;
+    display: block;
+    height: 100%;
+    line-height: 50px;
+    padding: 0 10px 0 10px;
+    text-decoration: none;
+    color: black;
+}
+
+.sourceCode {
+    margin-left: auto;
+}
+
+.isActive {
+    border-bottom: solid 3px #37c859;
+ }

@@ -79,7 +79,7 @@ class Registration extends Component {
                        type="password"
                        name="passwordConfirmation"
                        placeholder="Confirm password"/>
-                <input disabled={!this.isValid()} value="Regsiter" type="submit"/>
+                <input disabled={!this.isValid()} value="Register" type="submit"/>
             </form>
             {redirect}
           </div>
