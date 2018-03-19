@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Route, Link} from 'react-router-dom'
+import { BrowserRouter, Route, NavLink} from 'react-router-dom'
 import TodoList from "./TodoList.jsx";
 import Login from "./Login.jsx";
 import Registration from "./Registration.jsx";
 import User from "./../Models/User.js";
- 
+import css from "./../styles/main.css";
+
+const styles = css.locals;
+
 class Main extends Component {
 
     constructor (props) {
@@ -15,21 +18,37 @@ class Main extends Component {
     render () {
       return (
         <BrowserRouter>
-          <div>
-            <h1>Simple SPA</h1>
-            <a href="https://github.com/GeorgeBekh/todo-list" target="_blank">Source code</a>
-            <h2>Routes</h2>
-              <ul>
-                <li><Link to="/">Todo</Link></li>
-                <li><Link to="/login">Login</Link></li>
-                <li><Link to="/registration">Registration</Link></li>
-              </ul>
-              <div className="content">
-                <Route exact path="/" render={props => <TodoList user={this.user} />} />
-                <Route path="/login" render={props => <Login user={this.user} />}/>
-                <Route path="/registration" render={props => <Registration user={this.user} />}/>
-              </div>
-          </div>
+            <div>
+                <div className={styles.header}>
+                    <NavLink className={styles.headerItem} 
+                             activeClassName={styles.isActive} 
+                             exact={true}
+                             to="/">
+                        To-Do List
+                    </NavLink>
+                    <NavLink className={styles.headerItem}
+                             activeClassName={styles.isActive}
+                             to="/login">
+                        Login
+                    </NavLink>
+                    <NavLink className={styles.headerItem}
+                             activeClassName={styles.isActive}
+                             to="/registration">
+                        Register
+                    </NavLink>
+                    <a className={[styles.headerItem, styles.sourceCode].join(" ")} 
+                       href="https://github.com/GeorgeBekh/todo-list" 
+                       target="_blank">
+                       <img className={styles.icon} src='/img/github-icon.png'/>
+                        Source code
+                    </a>
+                </div>
+                <div className={styles.content}>
+                  <Route exact path="/" render={props => <TodoList user={this.user} />} />
+                  <Route path="/login" render={props => <Login user={this.user} />}/>
+                  <Route path="/registration" render={props => <Registration user={this.user} />}/>
+                </div>
+            </div>
         </BrowserRouter>
       );
     }

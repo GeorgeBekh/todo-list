@@ -4,6 +4,10 @@ import TodoItem from "./TodoItem.jsx";
 import User from "../Models/User.js";
 import TodoListModel from "../Models/TodoListModel.js";
 import TodoListNetworkStorage from "../Models/TodoListNetworkStorage.js";
+import Checkbox from "./Checkbox.jsx";
+import css from "./../styles/to-do-list.css";
+
+const styles = css.locals;
  
 class TodoList extends Component {
 
@@ -21,7 +25,9 @@ class TodoList extends Component {
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleCheckAll = this.handleCheckAll.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
+    }
 
+    componentWillMount () {
         this.props.user.checkAuthentication(((isAuthenticated) => {
             this.setState({userAuthenticated: isAuthenticated});
         }).bind(this));
@@ -91,10 +97,12 @@ class TodoList extends Component {
 
         return (
           <div>
-            <h2>TODO-List</h2>
-            <div>
-                <input type="checkbox" checked={this.model.allChecked()} onChange={this.handleCheckAll} />
-                <input type="text" 
+            <h2>To-Do List</h2>
+            <div className={styles.item}>
+                <Checkbox checked={this.model.allChecked()} 
+                          onChange={this.handleCheckAll} />
+                <input className={styles.input}
+                       type="text" 
                        value={this.state.newTodo}
                        onChange={this.handleInput}
                        onKeyPress={this.handleKeyPress} 
@@ -104,15 +112,17 @@ class TodoList extends Component {
             {list}
             <div>
                 <label>
-                    <input type="radio" 
+                    <input className={styles.radio}
+                           type="radio" 
                            name="filter" 
                            value="all" 
-                           onChange={this.handleFilterChange} 
+                           onChange={this.handleFilterChange}
                            checked={this.state.filter === 'all'} />
                     All
                 </label>
                 <label>
-                    <input type="radio" 
+                    <input className={styles.radio}
+                           type="radio" 
                            name="filter"
                            value="unchecked"
                            onClick={this.handleFilterChange} 
@@ -120,7 +130,8 @@ class TodoList extends Component {
                     Active
                 </label>
                 <label>
-                    <input type="radio" 
+                    <input className={styles.radio}
+                           type="radio" 
                            name="filter" 
                            value="checked"
                            onClick={this.handleFilterChange} 

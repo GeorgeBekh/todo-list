@@ -1,0 +1,45 @@
+.header {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    top: 0;
+    height: 35px;
+    background: #efefef;
+    border-bottom: solid 1px #b6b6b6;
+    box-shadow: 0 2px 8px #b6b6b6;
+}
+
+.headerItem {
+    box-sizing: border-box;
+    display: block;
+    height: 100%;
+    line-height: 35px;
+    padding: 0 10px 0 10px;
+    text-decoration: none;
+    color: black;
+}
+
+.sourceCode {
+    margin-left: auto;
+}
+
+.isActive {
+    border-bottom: solid 3px #37c859;
+ }
+ 
+ .icon {
+     height: 20px;
+     vertical-align: middle;
+     margin-right: 5px;
+ }
+ 
+ .content {
+     margin: 100px auto;
+     width: 500px;
+     background: #efefef;
+     box-shadow: 0 2px 8px #b6b6b6;
+     border: solid 1px #b6b6b6;
+     border-radius: 3px;
+     padding: 20px;
+ }
+ 

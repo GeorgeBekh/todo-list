@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router-dom'
 import User from '../Models/User.js';
- 
+import css from "./../styles/forms.css";
+
+const forms = css.locals;
+
 class Registration extends Component {
 
     constructor (props) {
@@ -32,7 +35,6 @@ class Registration extends Component {
             this.setState({successful: true});
         };
         let onFailure = errorCode => {
-            console.log(errorCode);
             this.setState({
                 successful: false,
                 errorCode: errorCode
@@ -52,35 +54,43 @@ class Registration extends Component {
 
     render () {
         const redirect = this.state.successful ? <Redirect push to='/login'/> : '';
-        let message = '';
+        let error = '';
         switch (this.state.errorCode) {
             case 'userExists':
-                message = 'User already exists';
+                error = "User '" + this.state.login + "' already exists";
                 break;
             case '':
                 break;
             default:
-                message = 'Unknown error';
+                error = 'Unknown error';
         }
+        
+        let message = error ? <div className={[forms.error, forms.element].join(" ")}>{error}</div> : '';
 
         return (
           <div>
-            <h2>Register</h2>
-            <p>{message}</p>
             <form autoComplete="on" onSubmit={this.handleFormSubmit}>
-                <input onChange={this.handleInput} 
+                <h2>Register</h2>
+                {message}
+                <input className={forms.element}
+                       onChange={this.handleInput} 
                        type="email"
                        name="login"
                        placeholder="Email"/>
-                <input onChange={this.handleInput} 
+                <input className={forms.element}
+                       onChange={this.handleInput} 
                        type="password"
                        name="password"
                        placeholder="Password"/>
-                <input onChange={this.handleInput} 
+                <input className={forms.element}
+                       onChange={this.handleInput} 
                        type="password"
                        name="passwordConfirmation"
                        placeholder="Confirm password"/>
-                <input disabled={!this.isValid()} value="Regsiter" type="submit"/>
+                <input className={[forms.element, forms.submit].join(" ")} 
+                       disabled={!this.isValid()}
+                       value="Register"
+                       type="submit"/>
             </form>
             {redirect}
           </div>

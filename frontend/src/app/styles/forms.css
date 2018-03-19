@@ -1,0 +1,31 @@
+.element {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 1px solid #b6b6b6;
+    padding: 5px;
+    margin-top: 11px;
+    height: 2.5em;
+}
+
+.submit {
+    background-image: linear-gradient(-180deg, #55d070 0%, #45a75a 90%);
+    margin-top: 22px;
+    color: white;
+}
+
+.submit:disabled {
+    background: #a7d0b0;
+}
+
+.checkbox {
+    
+}
+
+.error {
+    text-align: center;
+    line-height: 2em;
+    color: white;
+    background-image: linear-gradient(-180deg, #d07c7c 0%, #d05d5d 90%);
+}

@@ -1,0 +1,50 @@
+.input {
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 1px solid #b6b6b6;
+    padding: 5px;
+    height: 2.35em;
+    width: 90%;
+}
+
+.filterItem {
+    
+}
+
+.item {
+    height: 2.35em;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    border-bottom: solid 1px #b6b6b6;
+}
+
+.itemText {
+    line-height: 2.35em;
+    vertical-align: middle;
+}
+
+.closeButton {
+    display: inline;
+    height: 100%;
+    width: 2.35em;
+    background: #dddddd;
+    float: right;
+    margin-right: 11px;
+    cursor: pointer;
+}
+
+.closeButton:hover {
+    background: #ebebeb;
+}
+
+.closeButton > div {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 0.94em;
+    font-size: 2.5em;
+    color: #ababab;
+}
+
+.closeButton:hover > div {
+    color: #c5c5c5;
+}
