@@ -4,6 +4,7 @@ import TodoItem from "./TodoItem.jsx";
 import User from "../Models/User.js";
 import TodoListModel from "../Models/TodoListModel.js";
 import TodoListNetworkStorage from "../Models/TodoListNetworkStorage.js";
+import Checkbox from "./Checkbox.jsx";
 import css from "./../styles/to-do-list.css";
 
 const styles = css.locals;
@@ -96,12 +97,10 @@ class TodoList extends Component {
 
         return (
           <div>
-            <h2>TODO-List</h2>
-            <div>
-                <input className={styles.checkbox}
-                       type="checkbox"
-                       checked={this.model.allChecked()}
-                       onChange={this.handleCheckAll} />
+            <h2>To-Do List</h2>
+            <div className={styles.item}>
+                <Checkbox checked={this.model.allChecked()} 
+                          onChange={this.handleCheckAll} />
                 <input className={styles.input}
                        type="text" 
                        value={this.state.newTodo}
