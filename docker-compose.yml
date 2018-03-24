@@ -59,4 +59,14 @@ services:
       - default
     ports:
       - ${APP_IP:-127.0.0.1}:80:80
-    
+
+
+  node:
+    image: node:8.9-alpine
+    working_dir: /var/www
+    volumes:
+      - $PWD/node:/srv
+    restart: always
+    networks:
+      - default
+    command: npm run start

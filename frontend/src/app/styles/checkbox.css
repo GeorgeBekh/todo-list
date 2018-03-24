@@ -15,7 +15,8 @@
   content: '';
   position: absolute;
   left: 0; top: 0;
-  width: 2em; height: 2em;
+  width: 1.75em;
+  height: 1.75em;
   border: 1px solid #ccc;
   background: #fff;
   border-radius: 4px;
@@ -26,8 +27,9 @@
 .checkbox:checked + label:after {
   content: '✔';
   position: absolute;
-  top: .2em; left: .275em;
-  font-size: 2em;
+  top: -.1em;
+  left: .175em;
+  font-size: 2.5em;
   line-height: 0.8;
   color: #37c859;
   transition: all .2s;

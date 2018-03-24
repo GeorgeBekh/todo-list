@@ -1,0 +1,20 @@
+.item {
+    padding: 5px;
+    display: inline-block;
+    background: #ababab;
+    border-radius: 3px;
+    margin-right: 11px;
+    color: white;
+}
+
+.item:hover {
+    background: #c5c5c5;
+}
+
+.active {
+    background: #37c859;
+}
+
+.active:hover {
+    background: #51e273;
+}

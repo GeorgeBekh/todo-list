@@ -6,7 +6,7 @@ import TodoListModel from "../Models/TodoListModel.js";
 import TodoListNetworkStorage from "../Models/TodoListNetworkStorage.js";
 import Checkbox from "./Checkbox.jsx";
 import css from "./../styles/to-do-list.css";
-
+import FilterItem from "./FilterItem.jsx";
 const styles = css.locals;
  
 class TodoList extends Component {
@@ -68,8 +68,8 @@ class TodoList extends Component {
         this.model.setAll(e.target.checked);
     }
 
-    handleFilterChange (e) {
-        this.setState({filter: e.target.value});
+    handleFilterChange (filterName) {
+        this.setState({filter: filterName});
     }
 
     handleItemToggle (item) {
@@ -84,7 +84,7 @@ class TodoList extends Component {
         let redirect = this.state.userAuthenticated === false ? <Redirect push to='/login'/> : '';
         let list = [];
         let items = this.model.getItems(this.state.filter);
-
+	let value = '';
         for (var i=0; i < items.length; i++) {
             let item = items[i];
             list.push(
@@ -110,34 +110,22 @@ class TodoList extends Component {
                        placeholder="Type and press Enter"/>
             </div>
             {list}
-            <div>
-                <label>
-                    <input className={styles.radio}
-                           type="radio" 
-                           name="filter" 
-                           value="all" 
-                           onChange={this.handleFilterChange}
-                           checked={this.state.filter === 'all'} />
-                    All
-                </label>
-                <label>
-                    <input className={styles.radio}
-                           type="radio" 
-                           name="filter"
-                           value="unchecked"
-                           onClick={this.handleFilterChange} 
-                           checked={this.state.filter === 'unchecked'} />
-                    Active
-                </label>
-                <label>
-                    <input className={styles.radio}
-                           type="radio" 
-                           name="filter" 
-                           value="checked"
-                           onClick={this.handleFilterChange} 
-                           checked={this.state.filter === 'checked'} />
-                    Completed
-                </label>
+            <div className={styles.filterContainer}>
+	      <FilterItem onChange={this.handleFilterChange}
+			  value={value = 'all'}
+			  active={this.state.filter === value}
+			  label='All'
+			  />
+              <FilterItem onChange={this.handleFilterChange}
+			  value={value = 'unchecked'}
+			  active={this.state.filter === value}
+			  label='Active'
+			  />
+	      <FilterItem onChange={this.handleFilterChange}
+			  value={value = 'checked'}
+			  active={this.state.filter === value}
+			  label='Completed'
+			  />
             </div>
             {redirect}
           </div>
