@@ -37,7 +37,7 @@ class Main extends Component {
                         Register
                     </NavLink>
                     <a className={[styles.headerItem, styles.sourceCode].join(" ")} 
-                       href="https://github.com/GeorgeBekh/todo-list" 
+                       href="https://github.com/GeorgeBekh/web-projects" 
                        target="_blank">
                        <img className={styles.icon} src='/img/github-icon.png'/>
                         Source code

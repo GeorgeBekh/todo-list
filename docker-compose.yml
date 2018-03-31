@@ -1,72 +1,10 @@
 version: '3'
 
-volumes:
-  db-data:
-
 services:
-  phalcon:
-    depends_on:
-      - migrator
-    build:
-      context: .
-      dockerfile: ./build/prod/phalcon/Dockerfile
-    volumes:
-      - $PWD/src:/var/www
-    restart: always
-    networks:
-      default:
-        aliases:
-          - backend
-    environment:
-      - APP_SECRET
-
-  migrator: 
-    depends_on:
-      - db
-    working_dir: /var/www
-    build:
-      context: .
-      dockerfile: ./build/prod/migrator/Dockerfile
-    volumes:
-      - $PWD/src:/var/www
-    networks:
-      - default
-    command: phalcon migration run
-
-  db:
-    image: postgres:10.3-alpine
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    restart: always
-    networks:
-      default:
-        aliases:
-          - database
-    environment:
-      POSTGRES_PASSWORD: password #simple password since ports ain't open
-      POSTGRES_DB: app
-
   nginx:
-    depends_on:
-      - phalcon
-    build:
-      context: .
-      dockerfile: ./build/prod/nginx/Dockerfile
+    image: nginx:alpine
     volumes:
-      - $PWD/frontend/public:/var/www
+      - $PWD/public:/usr/share/nginx/html
     restart: always
-    networks:
-      - default
     ports:
-      - ${APP_IP:-127.0.0.1}:80:80
-
-
-  node:
-    image: node:8.9-alpine
-    working_dir: /var/www
-    volumes:
-      - $PWD/node:/srv
-    restart: always
-    networks:
-      - default
-    command: npm run start
+      - 80:80
