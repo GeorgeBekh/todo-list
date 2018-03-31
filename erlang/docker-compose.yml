@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  server:
+    image: erlang:20-alpine
+    working_dir: /app
+    volumes:
+      - $PWD:/app
+    command: sh -c "erlc ./script.erl && erl -noshell -s script start"
+    ports:
+      - 80:80
