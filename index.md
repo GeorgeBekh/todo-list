@@ -2,7 +2,7 @@
 ## About
 I host my hobby projects on this website.
 You can get the source code [here](https://github.com/GeorgeBekh/web-projects)
-## My projects
+## Projects
  * [To-Do List](:8080/registration) - a little project with authentication and persistent storage.
    * React
    * Webpack
