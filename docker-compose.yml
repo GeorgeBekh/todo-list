@@ -8,3 +8,10 @@ services:
     restart: always
     ports:
       - 80:80
+
+  node:
+    image: node:alpine
+    volumes:
+      - $PWD:/app
+    working_dir: /app
+    command: sh -c "npm i && npm run build"

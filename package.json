@@ -1,0 +1,22 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "This is general repository for my web projects It contains multiple projects running on different ports of the server",
+  "main": "index.js",
+  "scripts": {
+    "build": "generate-md --layout github --input index.md --output public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeorgeBekh/web-projects.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GeorgeBekh/web-projects/issues"
+  },
+  "homepage": "https://github.com/GeorgeBekh/web-projects#readme",
+  "dependencies": {
+    "markdown-styles": "^3.1.10"
+  }
+}

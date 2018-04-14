@@ -6,6 +6,6 @@ services:
     working_dir: /app
     volumes:
       - $PWD:/app
-    command: sh -c "erlc ./script.erl && erl -noshell -s script start"
+    command: sh -c "erlc ./start.erl && erl -noshell -s start start"
     ports:
       - 80:80
